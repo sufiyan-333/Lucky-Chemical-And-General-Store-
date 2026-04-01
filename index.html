@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: 'Helvetica', Arial, sans-serif; background-color: #f8f9fa; padding: 10px; margin: 0; }
+  header { background-color: #ffd700; padding: 20px; text-align: center; margin-bottom: 20px; border-radius: 0 0 20px 20px; }
+  header h1 { margin: 0; color: #333; letter-spacing: 2px; }
+  
+  .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1000px; margin: auto; }
+
+  .product-card { background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-radius: 15px; overflow: hidden; display: flex; flex-direction: column; }
+  .container { padding: 15px; flex-grow: 1; text-align: center; }
+  .price { color: #2e7d32; font-size: 20px; font-weight: bold; margin: 5px 0; }
+  
+  .whatsapp-btn {
+    background-color: #25D366;
+    color: white;
+    text-decoration: none;
+    padding: 12px;
+    font-weight: bold;
+    border-radius: 8px;
+    display: block;
+    margin-top: 10px;
+    transition: 0.3s;
+  }
+  .whatsapp-btn:hover { background-color: #128C7E; }
+  img { width: 100%; height: 180px; object-fit: contain; background: #eee; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>LUCKY STORE</h1>
+  <p>Fresh Grocery & Daily Essentials</p>
+</header>
+
+<div class="grid-container">
+
+  <div class="product-card">
+    <img src="https://via.placeholder.com/300x200?text=Tapal+Tea" alt="Tapal Tea">
+    <div class="container">
+      <h3>Tapal Danedar Tea</h3>
+      <p class="price">Rs. 550</p>
+      <a href="https://wa.me/923333367707?text=I%20want%20to%20order%20Tapal%20Tea" class="whatsapp-btn">Order on WhatsApp</a>
+    </div>
+  </div>
+
+  <div class="product-card">
+    <img src="https://via.placeholder.com/300x200?text=Shan+Masala" alt="Shan Masala">
+    <div class="container">
+      <h3>Shan Biryani Masala</h3>
+      <p class="price">Rs. 100</p>
+      <a href="https://wa.me/923333367707?text=I%20want%20to%20order%20Shan%20Biryani%20Masala" class="whatsapp-btn">Order on WhatsApp</a>
+    </div>
+  </div>
+
+  <div class="product-card">
+    <img src="https://via.placeholder.com/300x200?text=Soap" alt="Soap">
+    <div class="container">
+      <h3>Beauty Soap</h3>
+      <p class="price">Rs. 150</p>
+      <a href="https://wa.me/923333367707?text=I%20want%20to%20order%20Soap" class="whatsapp-btn">Order on WhatsApp</a>
+    </div>
+  </div>
+
+</div>
+
+<div style="text-align: center; margin-top: 40px; padding: 20px;">
+  <h3>Need a full grocery list?</h3>
+  <a href="https://wa.me/923333367707?text=Hi%20Lucky%20Store!%20I%20want%20to%20order%3A%0A1.%0A2.%0A3." 
+     style="background-color: #333; color: white; padding: 15px 30px; text-decoration: none; border-radius: 30px; font-weight: bold;">
+     Send My Shopping List
+  </a>
+</div>
+
+</body>
+</html>
