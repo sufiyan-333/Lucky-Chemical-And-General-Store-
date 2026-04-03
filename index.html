@@ -2,48 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUCKY STORE | Smart Wholesale Cart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LUCKY STORE | Wholesale Price List</title>
     <style>
+        /* --- CSS: Design aur Layout --- */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
+            background-color: #f8f9fa;
             margin: 0;
-            padding-bottom: 100px;
+            padding-bottom: 120px;
+            /* Zoom ko mazeed rokne ke liye touch behavior */
+            touch-action: manipulation; 
         }
 
         header {
-            background: #2c3e50;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
             color: white;
             text-align: center;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .search-box {
+        header h1 { margin: 0; font-size: 2rem; text-transform: uppercase; letter-spacing: 2px; }
+
+        .search-container {
             position: sticky;
             top: 0;
-            background: #f4f7f6;
+            background: #f8f9fa;
             padding: 15px;
             z-index: 100;
+            max-width: 650px;
+            margin: 0 auto;
         }
 
         #itemSearch {
             width: 100%;
-            max-width: 500px;
-            display: block;
-            margin: 0 auto;
             padding: 12px 20px;
             border: 2px solid #ddd;
-            border-radius: 30px;
+            border-radius: 50px;
             font-size: 1rem;
             outline: none;
+            box-sizing: border-box;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
         .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 10px;
+            max-width: 650px;
+            margin: 10px auto;
+            padding: 0 15px;
         }
 
         .item-row {
@@ -51,78 +57,118 @@
             justify-content: space-between;
             align-items: center;
             background: white;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            padding: 18px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            gap: 15px;
         }
 
-        .item-name { font-weight: bold; color: #333; font-size: 1rem; }
-        .item-price { color: #e67e22; font-size: 0.9rem; margin-top: 4px; }
+        .item-row.selected {
+            border-color: #e67e22;
+            background-color: #fffaf6;
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #2c3e50;
+        }
+
+        .item-price {
+            color: #e67e22;
+            font-weight: 600;
+            margin-top: 5px;
+            font-size: 0.95rem;
+        }
 
         .qty-controls {
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: #eee;
-            padding: 5px 10px;
-            border-radius: 20px;
+            gap: 12px;
+            background: #f1f3f5;
+            padding: 6px 12px;
+            border-radius: 30px;
         }
 
         .qty-btn {
             background: #2c3e50;
             color: white;
             border: none;
-            width: 28px;
-            height: 28px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
+            font-size: 1.2rem;
             cursor: pointer;
-            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .qty-input {
-            width: 25px;
+            width: 35px;
             text-align: center;
             border: none;
             background: transparent;
             font-weight: bold;
+            font-size: 1.1rem;
+            color: #2c3e50;
         }
 
-        /* Floating Footer Bar */
-        .cart-bar {
+        /* Modal Settings */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 10% auto;
+            padding: 25px;
+            width: 85%;
+            max-width: 450px;
+            border-radius: 20px;
+        }
+
+        /* Footer Settings */
+        .footer-total {
             position: fixed;
             bottom: 0;
             width: 100%;
-            background: white;
-            padding: 15px 20px;
+            background: #ffffff;
+            padding: 15px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-sizing: border-box;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
         }
 
-        #total-display { font-size: 1.4rem; font-weight: 800; color: #2c3e50; }
-        
-        .order-btn {
-            background: #25D366;
+        #grand-total { font-size: 1.6rem; color: #2c3e50; font-weight: 800; }
+
+        .send-order-btn {
+            background-color: #2c3e50;
             color: white;
-            padding: 12px 25px;
-            border-radius: 30px;
+            padding: 14px 25px;
+            border-radius: 50px;
             border: none;
-            font-weight: bold;
             cursor: pointer;
-            font-size: 1rem;
-        }
-
-        /* Cart Badge */
-        #cart-count {
-            background: #e74c3c;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            margin-left: 5px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -130,169 +176,48 @@
 
     <header>
         <h1>LUCKY STORE</h1>
-        <div style="font-size: 0.8rem; opacity: 0.8;">Wholesale Price List</div>
+        <p>Wholesale Price List - No Zoom</p>
     </header>
 
-    <div class="search-box">
-        <input type="text" id="itemSearch" onkeyup="filterItems()" placeholder="Search items...">
+    <div class="search-container">
+        <input type="text" id="itemSearch" onkeyup="searchItems()" placeholder="Search product...">
+    </div>
+
+    <div id="summaryModal" class="modal">
+        <div class="modal-content">
+            <h2 style="text-align:center; color:#2c3e50;">Order Bill</h2>
+            <div id="order-list-modal" style="margin:20px 0; max-height:200px; overflow-y:auto;"></div>
+            <div style="font-size: 1.3rem; font-weight: 800; text-align: right;">Total: <span id="modal-total">0</span></div>
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button onclick="closeModal()" style="flex:1; padding:12px; border-radius:10px; border:none; background:#eee;">Edit</button>
+                <button onclick="confirmAndSendWhatsApp()" style="flex:2; padding:12px; border-radius:10px; border:none; background:#25D366; color:white; font-weight:bold;">WhatsApp Order</button>
+            </div>
+        </div>
     </div>
 
     <div class="container" id="productList">
         <div class="item-row" data-name="Tapal Mixture 900grm" data-price="1630">
-            <div class="info">
-                <div class="item-name">Tapal Mixture 900grm</div>
-                <div class="item-price">Rs. 1630/-</div>
+            <div class="item-info">
+                <span class="item-name">Tapal Mixture 900grm</span>
+                <span class="item-price">Rs. 1630/-</span>
             </div>
             <div class="qty-controls">
-                <button class="qty-btn" onclick="changeQty(this, -1)">-</button>
+                <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
                 <input type="number" value="0" class="qty-input" readonly>
-                <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
+                <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
             </div>
+        </div>
         </div>
 
-        <div class="item-row" data-name="Tapal Mixture 430grm" data-price="830">
-            <div class="info">
-                <div class="item-name">Tapal Mixture 430grm</div>
-                <div class="item-price">Rs. 830/-</div>
-            </div>
-            <div class="qty-controls">
-                <button class="qty-btn" onclick="changeQty(this, -1)">-</button>
-                <input type="number" value="0" class="qty-input" readonly>
-                <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
-            </div>
+    <div class="footer-total">
+        <div class="total-box">
+            <div id="grand-total">Rs. 0</div>
         </div>
-
-        <div class="item-row" data-name="Surf Excel 1kg" data-price="520">
-            <div class="info">
-                <div class="item-name">Surf Excel 1kg</div>
-                <div class="item-price">Rs. 520/-</div>
-            </div>
-            <div class="qty-controls">
-                <button class="qty-btn" onclick="changeQty(this, -1)">-</button>
-                <input type="number" value="0" class="qty-input" readonly>
-                <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-
-        <div class="item-row" data-name="Surf Excel 500grm" data-price="260">
-            <div class="info">
-                <div class="item-name">Surf Excel 500grm</div>
-                <div class="item-price">Rs. 260/-</div>
-            </div>
-            <div class="qty-controls">
-                <button class="qty-btn" onclick="changeQty(this, -1)">-</button>
-                <input type="number" value="0" class="qty-input" readonly>
-                <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-
-        <div class="item-row" data-name="Brite 1kg" data-price="520">
-            <div class="info">
-                <div class="item-name">Brite 1kg</div>
-                <div class="item-price">Rs. 520/-</div>
-            </div>
-            <div class="qty-controls">
-                <button class="qty-btn" onclick="changeQty(this, -1)">-</button>
-                <input type="number" value="0" class="qty-input" readonly>
-                <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-
-        <div class="item-row" data-name="Brite 500grm" data-price="260">
-            <div class="info">
-                <div class="item-name">Brite 500grm</div>
-                <div class="item-price">Rs. 260/-</div>
-            </div>
-            <div class="qty-controls">
-                <button class="qty-btn" onclick="changeQty(this, -1)">-</button>
-                <input type="number" value="0" class="qty-input" readonly>
-                <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-
-        <div class="item-row" data-name="Sufi 1kg" data-price="500">
-            <div class="info">
-                <div class="item-name">Sufi 1kg</div>
-                <div class="item-price">Rs. 500/-</div>
-            </div>
-            <div class="qty-controls">
-                <button class="qty-btn" onclick="changeQty(this, -1)">-</button>
-                <input type="number" value="0" class="qty-input" readonly>
-                <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-
-        <div class="item-row" data-name="Sufi 500grm" data-price="250">
-            <div class="info">
-                <div class="item-name">Sufi 500grm</div>
-                <div class="item-price">Rs. 250/-</div>
-            </div>
-            <div class="qty-controls">
-                <button class="qty-btn" onclick="changeQty(this, -1)">-</button>
-                <input type="number" value="0" class="qty-input" readonly>
-                <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-
-        <div class="item-row" data-name="Tapa Karak 900grm" data-price="1550">
-            <div class="info">
-                <div class="item-name">Tapa Karak 900grm</div>
-                <div class="item-price">Rs. 1550/-</div>
-            </div>
-            <div class="qty-controls">
-                <button class="qty-btn" onclick="changeQty(this, -1)">-</button>
-                <input type="number" value="0" class="qty-input" readonly>
-                <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-
-        <div class="item-row" data-name="Kolson Spaghetti" data-price="170">
-            <div class="info">
-                <div class="item-name">Kolson Spaghetti</div>
-                <div class="item-price">Rs. 170/-</div>
-            </div>
-            <div class="qty-controls">
-                <button class="qty-btn" onclick="changeQty(this, -1)">-</button>
-                <input type="number" value="0" class="qty-input" readonly>
-                <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-
-        <div class="item-row" data-name="Tang Orange 375grm" data-price="310">
-            <div class="info">
-                <div class="item-name">Tang Orange 375grm</div>
-                <div class="item-price">Rs. 310/-</div>
-            </div>
-            <div class="qty-controls">
-                <button class="qty-btn" onclick="changeQty(this, -1)">-</button>
-                <input type="number" value="0" class="qty-input" readonly>
-                <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-
-        <div class="item-row" data-name="Shan Bombay Biryani Masala" data-price="130">
-            <div class="info">
-                <div class="item-name">Shan Bombay Biryani Masala</div>
-                <div class="item-price">Rs. 130/-</div>
-            </div>
-            <div class="qty-controls">
-                <button class="qty-btn" onclick="changeQty(this, -1)">-</button>
-                <input type="number" value="0" class="qty-input" readonly>
-                <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="cart-bar">
-        <div>
-            <span style="font-size: 0.8rem; color: #666;">Total Items:<span id="cart-count">0</span></span>
-            <div id="total-display">Rs. 0</div>
-        </div>
-        <button class="order-btn" onclick="sendOrder()">Send WhatsApp Order</button>
+        <button class="send-order-btn" onclick="showSummaryModal()">View Order</button>
     </div>
 
     <script>
-        function filterItems() {
+        function searchItems() {
             let input = document.getElementById('itemSearch').value.toLowerCase();
             let items = document.querySelectorAll('.item-row');
             items.forEach(item => {
@@ -301,53 +226,62 @@
             });
         }
 
-        function changeQty(btn, delta) {
-            let input = btn.parentElement.querySelector('.qty-input');
-            let val = parseInt(input.value) + delta;
+        function updateQty(btn, delta) {
+            let qtyInput = btn.parentElement.querySelector('.qty-input');
+            let itemRow = btn.closest('.item-row');
+            let val = (parseInt(qtyInput.value) || 0) + delta;
             if (val >= 0) {
-                input.value = val;
-                updateCart();
+                qtyInput.value = val;
+                if (val > 0) itemRow.classList.add('selected');
+                else itemRow.classList.remove('selected');
+                calculateTotal();
             }
         }
 
-        function updateCart() {
+        function calculateTotal() {
             let total = 0;
-            let count = 0;
             document.querySelectorAll('.item-row').forEach(item => {
                 let qty = parseInt(item.querySelector('.qty-input').value);
-                let price = parseInt(item.getAttribute('data-price'));
-                if (qty > 0) {
-                    total += (qty * price);
-                    count += qty;
-                }
+                total += (qty * parseInt(item.getAttribute('data-price')));
             });
-            document.getElementById('total-display').innerText = "Rs. " + total;
-            document.getElementById('cart-count').innerText = count;
+            document.getElementById('grand-total').innerText = "Rs. " + total;
         }
 
-        function sendOrder() {
-            let message = "*NEW ORDER: LUCKY STORE*\n--------------------------\n";
+        function showSummaryModal() {
+            let list = document.getElementById('order-list-modal');
+            list.innerHTML = "";
             let total = 0;
-            let hasItems = false;
-            
+            let itemsFound = false;
+
             document.querySelectorAll('.item-row').forEach(item => {
                 let qty = parseInt(item.querySelector('.qty-input').value);
-                let name = item.getAttribute('data-name');
-                let price = parseInt(item.getAttribute('data-price'));
-                
                 if (qty > 0) {
-                    message += `📦 *${name}*\nQty: ${qty} x ${price} = Rs. ${qty * price}\n\n`;
+                    let name = item.getAttribute('data-name');
+                    let price = parseInt(item.getAttribute('data-price'));
+                    list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>${name} x ${qty}</span> <span>Rs. ${qty * price}</span></div>`;
                     total += (qty * price);
-                    hasItems = true;
+                    itemsFound = true;
                 }
             });
 
-            if (!hasItems) {
-                alert("Please add at least one item to your cart!");
-                return;
-            }
+            if (!itemsFound) { alert("Cart khali hai!"); return; }
+            document.getElementById('modal-total').innerText = "Rs. " + total;
+            document.getElementById('summaryModal').style.display = "block";
+        }
 
-            message += `--------------------------\n*GRAND TOTAL: Rs. ${total}*`;
+        function closeModal() { document.getElementById('summaryModal').style.display = "none"; }
+
+        function confirmAndSendWhatsApp() {
+            let message = "*LUCKY STORE ORDER*\n\n";
+            let total = 0;
+            document.querySelectorAll('.item-row').forEach(item => {
+                let qty = parseInt(item.querySelector('.qty-input').value);
+                if (qty > 0) {
+                    message += `✅ *${item.getAttribute('data-name')}*\nQty: ${qty} | Rs. ${qty * parseInt(item.getAttribute('data-price'))}\n\n`;
+                    total += (qty * parseInt(item.getAttribute('data-price')));
+                }
+            });
+            message += `*Total: Rs. ${total}*`;
             window.open("https://wa.me/923333367707?text=" + encodeURIComponent(message), '_blank');
         }
     </script>
