@@ -21,7 +21,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
 
-        /* Naya lamba naam adjust karne ke liye font size thoda chota kiya hai */
         header h1 { 
             margin: 0; 
             font-size: 1.3rem; 
@@ -62,7 +61,7 @@
             justify-content: space-between;
             align-items: center;
             background: white;
-            padding: 15px;
+            padding: 18px;
             margin-bottom: 10px;
             border-radius: 12px;
             border: 2px solid transparent;
@@ -74,6 +73,7 @@
             background-color: #f0fdfa;
         }
 
+        .item-info { display: flex; flex-direction: column; flex: 1; }
         .item-name { font-weight: 700; font-size: 1rem; color: #1e293b; }
         .item-price { color: #0891b2; font-weight: 600; font-size: 0.9rem; }
 
@@ -91,32 +91,19 @@
             background: #1e3a8a;
             color: white;
             border: none;
-            width: 32px;
-            height: 32px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .qty-input { width: 30px; text-align: center; border: none; background: transparent; font-weight: bold; }
+        .qty-input { width: 30px; text-align: center; border: none; background: transparent; font-weight: bold; font-size: 1rem; color: #1e293b; }
 
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0; top: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.8);
-        }
-
-        .modal-content {
-            background: white;
-            margin: 15% auto;
-            padding: 25px;
-            width: 85%;
-            max-width: 400px;
-            border-radius: 20px;
-        }
-
+        /* Footer & Modal */
         .footer-total {
             position: fixed;
             bottom: 0; width: 100%;
@@ -130,7 +117,32 @@
         }
 
         #grand-total { font-size: 1.5rem; color: #1e3a8a; font-weight: 800; }
-        .send-order-btn { background-color: #0d9488; color: white; padding: 12px 22px; border-radius: 50px; border: none; font-weight: bold; }
+        .send-order-btn { background-color: #0d9488; color: white; padding: 12px 22px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer;}
+
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); }
+        .modal-content { background: white; margin: 15% auto; padding: 25px; width: 85%; max-width: 450px; border-radius: 20px; }
+
+        /* Order List Modal item style with X */
+        .modal-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .remove-item-btn {
+            color: #ef4444;
+            background: #fee2e2;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
@@ -146,61 +158,61 @@
     <div id="summaryModal" class="modal">
         <div class="modal-content">
             <h2 style="text-align:center; color:#1e3a8a; margin-top:0;">Order Bill</h2>
-            <div id="order-list-modal" style="margin:20px 0; max-height:200px; overflow-y:auto;"></div>
-            <div style="font-size: 1.2rem; font-weight: 800; text-align: right; border-top: 1px solid #eee; padding-top: 10px;">Total: <span id="modal-total">0</span></div>
+            <div id="order-list-modal" style="margin:20px 0; max-height:300px; overflow-y:auto;"></div>
+            <div style="font-size: 1.2rem; font-weight: 800; text-align: right; border-top: 2px solid #eee; padding-top: 10px;">Total: <span id="modal-total">0</span></div>
             <div style="display:flex; gap:10px; margin-top:20px;">
-                <button onclick="closeModal()" style="flex:1; padding:12px; border-radius:12px; background:#f1f5f9; border:none;">Edit</button>
+                <button onclick="closeModal()" style="flex:1; padding:12px; border-radius:12px; background:#f1f5f9; border:none; font-weight:600;">Edit</button>
                 <button onclick="confirmAndSendWhatsApp()" style="flex:2; padding:12px; border-radius:12px; background:#22c55e; color:white; font-weight:bold; border:none;">WhatsApp Order</button>
             </div>
         </div>
     </div>
 
     <div class="container" id="productList">
-        <div class="item-row" data-name="Tapal Mixture 900grm" data-price="1630">
+        <div class="item-row" id="item-0" data-name="Tapal Mixture 900grm" data-price="1630">
             <div class="item-info"><span class="item-name">Tapal Mixture 900grm</span><span class="item-price">Rs. 1630/-</span></div>
             <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
         </div>
-        <div class="item-row" data-name="Tapal Mixture 430grm" data-price="830">
+        <div class="item-row" id="item-1" data-name="Tapal Mixture 430grm" data-price="830">
             <div class="item-info"><span class="item-name">Tapal Mixture 430grm</span><span class="item-price">Rs. 830/-</span></div>
             <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
         </div>
-        <div class="item-row" data-name="Surf Excel 1kg" data-price="520">
+        <div class="item-row" id="item-2" data-name="Surf Excel 1kg" data-price="520">
             <div class="item-info"><span class="item-name">Surf Excel 1kg</span><span class="item-price">Rs. 520/-</span></div>
             <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
         </div>
-        <div class="item-row" data-name="Surf Excel 500grm" data-price="260">
+        <div class="item-row" id="item-3" data-name="Surf Excel 500grm" data-price="260">
             <div class="item-info"><span class="item-name">Surf Excel 500grm</span><span class="item-price">Rs. 260/-</span></div>
             <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
         </div>
-        <div class="item-row" data-name="Brite 1kg" data-price="520">
+        <div class="item-row" id="item-4" data-name="Brite 1kg" data-price="520">
             <div class="item-info"><span class="item-name">Brite 1kg</span><span class="item-price">Rs. 520/-</span></div>
             <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
         </div>
-        <div class="item-row" data-name="Brite 500grm" data-price="260">
+        <div class="item-row" id="item-5" data-name="Brite 500grm" data-price="260">
             <div class="item-info"><span class="item-name">Brite 500grm</span><span class="item-price">Rs. 260/-</span></div>
             <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
         </div>
-        <div class="item-row" data-name="Sufi 1kg" data-price="500">
+        <div class="item-row" id="item-6" data-name="Sufi 1kg" data-price="500">
             <div class="item-info"><span class="item-name">Sufi 1kg</span><span class="item-price">Rs. 500/-</span></div>
             <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
         </div>
-        <div class="item-row" data-name="Sufi 500grm" data-price="250">
+        <div class="item-row" id="item-7" data-name="Sufi 500grm" data-price="250">
             <div class="item-info"><span class="item-name">Sufi 500grm</span><span class="item-price">Rs. 250/-</span></div>
             <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
         </div>
-        <div class="item-row" data-name="Tapa Karak 900grm" data-price="1550">
+        <div class="item-row" id="item-8" data-name="Tapa Karak 900grm" data-price="1550">
             <div class="item-info"><span class="item-name">Tapa Karak 900grm</span><span class="item-price">Rs. 1550/-</span></div>
             <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
         </div>
-        <div class="item-row" data-name="Kolson Spaghetti" data-price="170">
+        <div class="item-row" id="item-9" data-name="Kolson Spaghetti" data-price="170">
             <div class="item-info"><span class="item-name">Kolson Spaghetti</span><span class="item-price">Rs. 170/-</span></div>
             <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
         </div>
-        <div class="item-row" data-name="Tang Orange 375grm" data-price="310">
+        <div class="item-row" id="item-10" data-name="Tang Orange 375grm" data-price="310">
             <div class="item-info"><span class="item-name">Tang Orange 375grm</span><span class="item-price">Rs. 310/-</span></div>
             <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
         </div>
-        <div class="item-row" data-name="Shan Bombay Biryani Masala" data-price="130">
+        <div class="item-row" id="item-11" data-name="Shan Bombay Biryani Masala" data-price="130">
             <div class="item-info"><span class="item-name">Shan Bombay Biryani Masala</span><span class="item-price">Rs. 130/-</span></div>
             <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
         </div>
@@ -219,6 +231,7 @@
                 item.style.display = name.includes(input) ? "flex" : "none";
             });
         }
+
         function updateQty(btn, delta) {
             let qtyInput = btn.parentElement.querySelector('.qty-input');
             let itemRow = btn.closest('.item-row');
@@ -230,6 +243,7 @@
                 calculateTotal();
             }
         }
+
         function calculateTotal() {
             let total = 0;
             document.querySelectorAll('.item-row').forEach(item => {
@@ -237,22 +251,58 @@
             });
             document.getElementById('grand-total').innerText = "Rs. " + total;
         }
+
         function showSummaryModal() {
             let list = document.getElementById('order-list-modal');
             list.innerHTML = ""; let total = 0; let found = false;
-            document.querySelectorAll('.item-row').forEach(item => {
+            
+            document.querySelectorAll('.item-row').forEach((item, index) => {
                 let qty = parseInt(item.querySelector('.qty-input').value);
                 if (qty > 0) {
-                    list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>${item.getAttribute('data-name')} x ${qty}</span> <b>Rs. ${qty * parseInt(item.getAttribute('data-price'))}</b></div>`;
-                    total += (qty * parseInt(item.getAttribute('data-price')));
+                    let name = item.getAttribute('data-name');
+                    let price = parseInt(item.getAttribute('data-price'));
+                    let itemTotal = qty * price;
+                    
+                    // Naya Row with Remove Button (X)
+                    list.innerHTML += `
+                    <div class="modal-item-row" id="modal-row-${index}">
+                        <div style="display:flex; align-items:center;">
+                            <button class="remove-item-btn" onclick="removeFromModal('${item.id}')">X</button>
+                            <span>${name} x ${qty}</span>
+                        </div>
+                        <b>Rs. ${itemTotal}</b>
+                    </div>`;
+                    
+                    total += itemTotal;
                     found = true;
                 }
             });
+            
             if (!found) { alert("Pehle items select karein!"); return; }
             document.getElementById('modal-total').innerText = "Rs. " + total;
             document.getElementById('summaryModal').style.display = "block";
         }
+
+        // Modal se item delete karne wala naya function
+        function removeFromModal(itemId) {
+            let originalItem = document.getElementById(itemId);
+            let qtyInput = originalItem.querySelector('.qty-input');
+            qtyInput.value = 0;
+            originalItem.classList.remove('selected');
+            calculateTotal();
+            
+            // Modal list ko refresh karein
+            showSummaryModal();
+            
+            // Agar sab items delete ho jayein toh modal band kar dein
+            let total = parseInt(document.getElementById('modal-total').innerText.replace("Rs. ", ""));
+            if (total === 0) {
+                closeModal();
+            }
+        }
+
         function closeModal() { document.getElementById('summaryModal').style.display = "none"; }
+
         function confirmAndSendWhatsApp() {
             let msg = "*ORDER: LUCKY CHEMICAL AND GENERAL STORE*\n\n";
             let total = 0;
