@@ -3,52 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LUCKY STORE | Wholesale Price List</title>
+    <title>LUCKY CHEMICAL AND GENERAL STORE</title>
     <style>
-        /* --- CSS: Design aur Layout --- */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
+            background-color: #f0f4f7;
             margin: 0;
             padding-bottom: 120px;
-            /* Zoom ko mazeed rokne ke liye touch behavior */
             touch-action: manipulation; 
         }
 
         header {
-            background: linear-gradient(135deg, #2c3e50, #34495e);
+            background: linear-gradient(135deg, #1e3a8a, #0d9488);
             color: white;
             text-align: center;
-            padding: 30px 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 25px 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
 
-        header h1 { margin: 0; font-size: 2rem; text-transform: uppercase; letter-spacing: 2px; }
+        /* Naya lamba naam adjust karne ke liye font size thoda chota kiya hai */
+        header h1 { 
+            margin: 0; 
+            font-size: 1.3rem; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            font-weight: 800;
+            line-height: 1.4;
+        }
 
         .search-container {
             position: sticky;
             top: 0;
-            background: #f8f9fa;
-            padding: 15px;
+            background: #f0f4f7;
+            padding: 12px;
             z-index: 100;
-            max-width: 650px;
+            max-width: 600px;
             margin: 0 auto;
         }
 
         #itemSearch {
             width: 100%;
-            padding: 12px 20px;
-            border: 2px solid #ddd;
+            padding: 10px 20px;
+            border: 2px solid #cbd5e1;
             border-radius: 50px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             outline: none;
             box-sizing: border-box;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
         .container {
-            max-width: 650px;
-            margin: 10px auto;
+            max-width: 600px;
+            margin: 5px auto;
             padding: 0 15px;
         }
 
@@ -57,175 +62,163 @@
             justify-content: space-between;
             align-items: center;
             background: white;
-            padding: 18px;
-            margin-bottom: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
             border-radius: 12px;
-            transition: all 0.3s ease;
             border: 2px solid transparent;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            gap: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
         }
 
         .item-row.selected {
-            border-color: #e67e22;
-            background-color: #fffaf6;
+            border-color: #0d9488;
+            background-color: #f0fdfa;
         }
 
-        .item-info {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-        }
-
-        .item-name {
-            font-weight: 700;
-            font-size: 1.05rem;
-            color: #2c3e50;
-        }
-
-        .item-price {
-            color: #e67e22;
-            font-weight: 600;
-            margin-top: 5px;
-            font-size: 0.95rem;
-        }
+        .item-name { font-weight: 700; font-size: 1rem; color: #1e293b; }
+        .item-price { color: #0891b2; font-weight: 600; font-size: 0.9rem; }
 
         .qty-controls {
             display: flex;
             align-items: center;
-            gap: 12px;
-            background: #f1f3f5;
-            padding: 6px 12px;
+            gap: 10px;
+            background: #f8fafc;
+            padding: 5px 10px;
             border-radius: 30px;
+            border: 1px solid #e2e8f0;
         }
 
         .qty-btn {
-            background: #2c3e50;
+            background: #1e3a8a;
             color: white;
             border: none;
-            width: 35px;
-            height: 35px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .qty-input {
-            width: 35px;
-            text-align: center;
-            border: none;
-            background: transparent;
-            font-weight: bold;
             font-size: 1.1rem;
-            color: #2c3e50;
+            cursor: pointer;
         }
 
-        /* Modal Settings */
+        .qty-input { width: 30px; text-align: center; border: none; background: transparent; font-weight: bold; }
+
         .modal {
             display: none;
             position: fixed;
             z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
+            left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.8);
         }
 
         .modal-content {
             background: white;
-            margin: 10% auto;
+            margin: 15% auto;
             padding: 25px;
             width: 85%;
-            max-width: 450px;
+            max-width: 400px;
             border-radius: 20px;
         }
 
-        /* Footer Settings */
         .footer-total {
             position: fixed;
-            bottom: 0;
-            width: 100%;
+            bottom: 0; width: 100%;
             background: #ffffff;
-            padding: 15px 25px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-sizing: border-box;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.1);
             z-index: 1000;
         }
 
-        #grand-total { font-size: 1.6rem; color: #2c3e50; font-weight: 800; }
-
-        .send-order-btn {
-            background-color: #2c3e50;
-            color: white;
-            padding: 14px 25px;
-            border-radius: 50px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-        }
+        #grand-total { font-size: 1.5rem; color: #1e3a8a; font-weight: 800; }
+        .send-order-btn { background-color: #0d9488; color: white; padding: 12px 22px; border-radius: 50px; border: none; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>LUCKY STORE</h1>
-        <p>Wholesale Price List - No Zoom</p>
+        <h1>LUCKY CHEMICAL AND GENERAL STORE</h1>
     </header>
 
     <div class="search-container">
-        <input type="text" id="itemSearch" onkeyup="searchItems()" placeholder="Search product...">
+        <input type="text" id="itemSearch" onkeyup="searchItems()" placeholder="Search products...">
     </div>
 
     <div id="summaryModal" class="modal">
         <div class="modal-content">
-            <h2 style="text-align:center; color:#2c3e50;">Order Bill</h2>
+            <h2 style="text-align:center; color:#1e3a8a; margin-top:0;">Order Bill</h2>
             <div id="order-list-modal" style="margin:20px 0; max-height:200px; overflow-y:auto;"></div>
-            <div style="font-size: 1.3rem; font-weight: 800; text-align: right;">Total: <span id="modal-total">0</span></div>
+            <div style="font-size: 1.2rem; font-weight: 800; text-align: right; border-top: 1px solid #eee; padding-top: 10px;">Total: <span id="modal-total">0</span></div>
             <div style="display:flex; gap:10px; margin-top:20px;">
-                <button onclick="closeModal()" style="flex:1; padding:12px; border-radius:10px; border:none; background:#eee;">Edit</button>
-                <button onclick="confirmAndSendWhatsApp()" style="flex:2; padding:12px; border-radius:10px; border:none; background:#25D366; color:white; font-weight:bold;">WhatsApp Order</button>
+                <button onclick="closeModal()" style="flex:1; padding:12px; border-radius:12px; background:#f1f5f9; border:none;">Edit</button>
+                <button onclick="confirmAndSendWhatsApp()" style="flex:2; padding:12px; border-radius:12px; background:#22c55e; color:white; font-weight:bold; border:none;">WhatsApp Order</button>
             </div>
         </div>
     </div>
 
     <div class="container" id="productList">
         <div class="item-row" data-name="Tapal Mixture 900grm" data-price="1630">
-            <div class="item-info">
-                <span class="item-name">Tapal Mixture 900grm</span>
-                <span class="item-price">Rs. 1630/-</span>
-            </div>
-            <div class="qty-controls">
-                <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
-                <input type="number" value="0" class="qty-input" readonly>
-                <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
-            </div>
+            <div class="item-info"><span class="item-name">Tapal Mixture 900grm</span><span class="item-price">Rs. 1630/-</span></div>
+            <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
         </div>
+        <div class="item-row" data-name="Tapal Mixture 430grm" data-price="830">
+            <div class="item-info"><span class="item-name">Tapal Mixture 430grm</span><span class="item-price">Rs. 830/-</span></div>
+            <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
         </div>
+        <div class="item-row" data-name="Surf Excel 1kg" data-price="520">
+            <div class="item-info"><span class="item-name">Surf Excel 1kg</span><span class="item-price">Rs. 520/-</span></div>
+            <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
+        </div>
+        <div class="item-row" data-name="Surf Excel 500grm" data-price="260">
+            <div class="item-info"><span class="item-name">Surf Excel 500grm</span><span class="item-price">Rs. 260/-</span></div>
+            <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
+        </div>
+        <div class="item-row" data-name="Brite 1kg" data-price="520">
+            <div class="item-info"><span class="item-name">Brite 1kg</span><span class="item-price">Rs. 520/-</span></div>
+            <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
+        </div>
+        <div class="item-row" data-name="Brite 500grm" data-price="260">
+            <div class="item-info"><span class="item-name">Brite 500grm</span><span class="item-price">Rs. 260/-</span></div>
+            <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
+        </div>
+        <div class="item-row" data-name="Sufi 1kg" data-price="500">
+            <div class="item-info"><span class="item-name">Sufi 1kg</span><span class="item-price">Rs. 500/-</span></div>
+            <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
+        </div>
+        <div class="item-row" data-name="Sufi 500grm" data-price="250">
+            <div class="item-info"><span class="item-name">Sufi 500grm</span><span class="item-price">Rs. 250/-</span></div>
+            <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
+        </div>
+        <div class="item-row" data-name="Tapa Karak 900grm" data-price="1550">
+            <div class="item-info"><span class="item-name">Tapa Karak 900grm</span><span class="item-price">Rs. 1550/-</span></div>
+            <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
+        </div>
+        <div class="item-row" data-name="Kolson Spaghetti" data-price="170">
+            <div class="item-info"><span class="item-name">Kolson Spaghetti</span><span class="item-price">Rs. 170/-</span></div>
+            <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
+        </div>
+        <div class="item-row" data-name="Tang Orange 375grm" data-price="310">
+            <div class="item-info"><span class="item-name">Tang Orange 375grm</span><span class="item-price">Rs. 310/-</span></div>
+            <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
+        </div>
+        <div class="item-row" data-name="Shan Bombay Biryani Masala" data-price="130">
+            <div class="item-info"><span class="item-name">Shan Bombay Biryani Masala</span><span class="item-price">Rs. 130/-</span></div>
+            <div class="qty-controls"><button class="qty-btn" onclick="updateQty(this, -1)">-</button><input type="number" value="0" class="qty-input" readonly><button class="qty-btn" onclick="updateQty(this, 1)">+</button></div>
+        </div>
+    </div>
 
     <div class="footer-total">
-        <div class="total-box">
-            <div id="grand-total">Rs. 0</div>
-        </div>
+        <div id="grand-total">Rs. 0</div>
         <button class="send-order-btn" onclick="showSummaryModal()">View Order</button>
     </div>
 
     <script>
         function searchItems() {
             let input = document.getElementById('itemSearch').value.toLowerCase();
-            let items = document.querySelectorAll('.item-row');
-            items.forEach(item => {
+            document.querySelectorAll('.item-row').forEach(item => {
                 let name = item.getAttribute('data-name').toLowerCase();
                 item.style.display = name.includes(input) ? "flex" : "none";
             });
         }
-
         function updateQty(btn, delta) {
             let qtyInput = btn.parentElement.querySelector('.qty-input');
             let itemRow = btn.closest('.item-row');
@@ -237,52 +230,41 @@
                 calculateTotal();
             }
         }
-
         function calculateTotal() {
             let total = 0;
             document.querySelectorAll('.item-row').forEach(item => {
-                let qty = parseInt(item.querySelector('.qty-input').value);
-                total += (qty * parseInt(item.getAttribute('data-price')));
+                total += (parseInt(item.querySelector('.qty-input').value) * parseInt(item.getAttribute('data-price')));
             });
             document.getElementById('grand-total').innerText = "Rs. " + total;
         }
-
         function showSummaryModal() {
             let list = document.getElementById('order-list-modal');
-            list.innerHTML = "";
-            let total = 0;
-            let itemsFound = false;
-
+            list.innerHTML = ""; let total = 0; let found = false;
             document.querySelectorAll('.item-row').forEach(item => {
                 let qty = parseInt(item.querySelector('.qty-input').value);
                 if (qty > 0) {
-                    let name = item.getAttribute('data-name');
-                    let price = parseInt(item.getAttribute('data-price'));
-                    list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>${name} x ${qty}</span> <span>Rs. ${qty * price}</span></div>`;
-                    total += (qty * price);
-                    itemsFound = true;
+                    list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>${item.getAttribute('data-name')} x ${qty}</span> <b>Rs. ${qty * parseInt(item.getAttribute('data-price'))}</b></div>`;
+                    total += (qty * parseInt(item.getAttribute('data-price')));
+                    found = true;
                 }
             });
-
-            if (!itemsFound) { alert("Cart khali hai!"); return; }
+            if (!found) { alert("Pehle items select karein!"); return; }
             document.getElementById('modal-total').innerText = "Rs. " + total;
             document.getElementById('summaryModal').style.display = "block";
         }
-
         function closeModal() { document.getElementById('summaryModal').style.display = "none"; }
-
         function confirmAndSendWhatsApp() {
-            let message = "*LUCKY STORE ORDER*\n\n";
+            let msg = "*ORDER: LUCKY CHEMICAL AND GENERAL STORE*\n\n";
             let total = 0;
             document.querySelectorAll('.item-row').forEach(item => {
                 let qty = parseInt(item.querySelector('.qty-input').value);
                 if (qty > 0) {
-                    message += `✅ *${item.getAttribute('data-name')}*\nQty: ${qty} | Rs. ${qty * parseInt(item.getAttribute('data-price'))}\n\n`;
+                    msg += `✅ *${item.getAttribute('data-name')}*\nQty: ${qty} | Total: Rs. ${qty * parseInt(item.getAttribute('data-price'))}\n\n`;
                     total += (qty * parseInt(item.getAttribute('data-price')));
                 }
             });
-            message += `*Total: Rs. ${total}*`;
-            window.open("https://wa.me/923333367707?text=" + encodeURIComponent(message), '_blank');
+            msg += `*Grand Total: Rs. ${total}*`;
+            window.open("https://wa.me/923333367707?text=" + encodeURIComponent(msg), '_blank');
         }
     </script>
 </body>
