@@ -21,7 +21,6 @@
 
         header h1 { margin: 0; font-size: 1.8rem; text-transform: uppercase; }
 
-        /* --- Search Bar Style --- */
         .search-container {
             position: sticky;
             top: 0;
@@ -40,12 +39,7 @@
             font-size: 1rem;
             outline: none;
             box-sizing: border-box;
-            transition: border-color 0.3s;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        #itemSearch:focus {
-            border-color: #e67e22;
         }
 
         .container {
@@ -82,7 +76,7 @@
 
         .item-name {
             font-weight: 700;
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: #2c3e50;
         }
 
@@ -109,17 +103,18 @@
             height: 30px;
             border-radius: 50%;
             cursor: pointer;
+            font-size: 1.2rem;
         }
 
         .qty-input {
-            width: 35px;
+            width: 30px;
             text-align: center;
             border: none;
             background: transparent;
             font-weight: bold;
+            font-size: 1rem;
         }
 
-        /* Footer */
         .footer-total {
             position: fixed;
             bottom: 0;
@@ -146,6 +141,10 @@
             border: none;
             cursor: pointer;
         }
+
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+            -webkit-appearance: none; margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -155,12 +154,13 @@
     </header>
 
     <div class="search-container">
-        <input type="text" id="itemSearch" onkeyup="searchItems()" placeholder="Search product (e.g. Tapal, Surf)...">
+        <input type="text" id="itemSearch" onkeyup="searchItems()" placeholder="Search product...">
     </div>
 
     <div class="container" id="inventoryList">
+        
         <div class="item-row" data-price="1630">
-            <img src="https://via.placeholder.com/50" alt="Tapal" class="item-photo">
+            <img src="https://via.placeholder.com/50" class="item-photo">
             <div class="item-info">
                 <span class="item-name">Tapal Mixture 900grm</span>
                 <span class="item-price">Rs. 1630/-</span>
@@ -172,8 +172,112 @@
             </div>
         </div>
 
+        <div class="item-row" data-price="830">
+            <img src="https://via.placeholder.com/50" class="item-photo">
+            <div class="item-info">
+                <span class="item-name">Tapal Mixture 430grm</span>
+                <span class="item-price">Rs. 830/-</span>
+            </div>
+            <div class="qty-controls">
+                <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
+                <input type="number" value="0" class="qty-input" onchange="calculateTotal()">
+                <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="item-row" data-price="520">
+            <img src="https://via.placeholder.com/50" class="item-photo">
+            <div class="item-info">
+                <span class="item-name">Surf Excel 1kg</span>
+                <span class="item-price">Rs. 520/-</span>
+            </div>
+            <div class="qty-controls">
+                <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
+                <input type="number" value="0" class="qty-input" onchange="calculateTotal()">
+                <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="item-row" data-price="260">
+            <img src="https://via.placeholder.com/50" class="item-photo">
+            <div class="item-info">
+                <span class="item-name">Surf Excel 500grm</span>
+                <span class="item-price">Rs. 260/-</span>
+            </div>
+            <div class="qty-controls">
+                <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
+                <input type="number" value="0" class="qty-input" onchange="calculateTotal()">
+                <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="item-row" data-price="520">
+            <img src="https://via.placeholder.com/50" class="item-photo">
+            <div class="item-info">
+                <span class="item-name">Brite 1kg</span>
+                <span class="item-price">Rs. 520/-</span>
+            </div>
+            <div class="qty-controls">
+                <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
+                <input type="number" value="0" class="qty-input" onchange="calculateTotal()">
+                <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="item-row" data-price="260">
+            <img src="https://via.placeholder.com/50" class="item-photo">
+            <div class="item-info">
+                <span class="item-name">Brite 500grm</span>
+                <span class="item-price">Rs. 260/-</span>
+            </div>
+            <div class="qty-controls">
+                <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
+                <input type="number" value="0" class="qty-input" onchange="calculateTotal()">
+                <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="item-row" data-price="500">
+            <img src="https://via.placeholder.com/50" class="item-photo">
+            <div class="item-info">
+                <span class="item-name">Sufi 1kg</span>
+                <span class="item-price">Rs. 500/-</span>
+            </div>
+            <div class="qty-controls">
+                <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
+                <input type="number" value="0" class="qty-input" onchange="calculateTotal()">
+                <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="item-row" data-price="250">
+            <img src="https://via.placeholder.com/50" class="item-photo">
+            <div class="item-info">
+                <span class="item-name">Sufi 500grm</span>
+                <span class="item-price">Rs. 250/-</span>
+            </div>
+            <div class="qty-controls">
+                <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
+                <input type="number" value="0" class="qty-input" onchange="calculateTotal()">
+                <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="item-row" data-price="1550">
+            <img src="https://via.placeholder.com/50" class="item-photo">
+            <div class="item-info">
+                <span class="item-name">Tapa Karak 900grm</span>
+                <span class="item-price">Rs. 1550/-</span>
+            </div>
+            <div class="qty-controls">
+                <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
+                <input type="number" value="0" class="qty-input" onchange="calculateTotal()">
+                <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
+            </div>
+        </div>
+
         <div class="item-row" data-price="170">
-            <img src="https://via.placeholder.com/50" alt="Kolson" class="item-photo">
+            <img src="https://via.placeholder.com/50" class="item-photo">
             <div class="item-info">
                 <span class="item-name">Kolson Spaghetti</span>
                 <span class="item-price">Rs. 170/-</span>
@@ -184,28 +288,47 @@
                 <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
             </div>
         </div>
+
+        <div class="item-row" data-price="310">
+            <img src="https://via.placeholder.com/50" class="item-photo">
+            <div class="item-info">
+                <span class="item-name">Tang Orange 375grm</span>
+                <span class="item-price">Rs. 310/-</span>
+            </div>
+            <div class="qty-controls">
+                <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
+                <input type="number" value="0" class="qty-input" onchange="calculateTotal()">
+                <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="item-row" data-price="130">
+            <img src="https://via.placeholder.com/50" class="item-photo">
+            <div class="item-info">
+                <span class="item-name">Shan Bombay Biryani Masala</span>
+                <span class="item-price">Rs. 130/-</span>
+            </div>
+            <div class="qty-controls">
+                <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
+                <input type="number" value="0" class="qty-input" onchange="calculateTotal()">
+                <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
+            </div>
+        </div>
+
     </div>
 
     <div class="footer-total">
-        <div class="total-box">
-            <div id="grand-total">Rs. 0</div>
-        </div>
+        <div id="grand-total">Rs. 0</div>
         <button class="whatsapp-btn" onclick="sendWhatsApp()">Order on WhatsApp</button>
     </div>
 
     <script>
-        // --- Search Function ---
         function searchItems() {
             let input = document.getElementById('itemSearch').value.toLowerCase();
             let items = document.querySelectorAll('.item-row');
-
             items.forEach(item => {
                 let name = item.querySelector('.item-name').innerText.toLowerCase();
-                if (name.includes(input)) {
-                    item.style.display = "flex";
-                } else {
-                    item.style.display = "none";
-                }
+                item.style.display = name.includes(input) ? "flex" : "none";
             });
         }
 
@@ -229,7 +352,7 @@
         }
 
         function sendWhatsApp() {
-            let message = "*NEW ORDER: LUCKY STORE*\n--------------------------\n";
+            let message = "*LUCKY STORE ORDER*\n--------------------------\n";
             let total = 0;
             let hasItems = false;
             document.querySelectorAll('.item-row').forEach(item => {
@@ -237,16 +360,15 @@
                 const qty = parseInt(item.querySelector('.qty-input').value) || 0;
                 const price = parseInt(item.getAttribute('data-price'));
                 if (qty > 0) {
-                    message += `✅ *${name}*\nQty: ${qty} | Total: Rs. ${price * qty}\n\n`;
+                    message += `✅ *${name}*\nQty: ${qty} | Rs. ${price * qty}\n\n`;
                     total += (price * qty);
                     hasItems = true;
                 }
             });
-            if (!hasItems) { alert("Select at least one item!"); return; }
-            message += `--------------------------\n*GRAND TOTAL: Rs. ${total}*`;
+            if (!hasItems) { alert("Koi item select karein!"); return; }
+            message += `--------------------------\n*TOTAL: Rs. ${total}*`;
             window.open("https://wa.me/923333367707?text=" + encodeURIComponent(message), '_blank');
         }
     </script>
-
 </body>
 </html>
